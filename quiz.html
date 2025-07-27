@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Quiz</title>
+    <style>
+      body {
+        font-family: 'Times New Roman', Times, serif;
+      }
+      button {
+        background-color: rgb(183, 183, 132);
+        border-color: rgb(122, 93, 115);
+        border-radius: 5px;
+        color: black;
+        font-weight: Bold;
+        padding-left: 5px;
+        padding-right: 7px;
+        font-size: 20px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: rgb(166, 170, 131);
+      }
+      body {
+        background-color: rgb(114, 113, 113);
+      }
+
+      .question {
+        font-family: 'Times New Roman', Times, serif;
+        font-size: 20px;
+      }
+
+      .options {
+        font-size: 15px;
+        font-family: 'Times New Roman', Times, serif;
+      }
+
+      .next-button {
+        background-color: rgb(85, 160, 71);
+      }
+    </style>
+  </head>
+
+  <body>
+    <p>Click the start button to start the quiz!</p>
+    <button onclick="
+      startQuiz();
+    " class="js-start-button">Start</button>
+
+    <div>
+      <div class="js-display-questions"></div>
+      <div class="js-display-options"></div>
+    </div>
+    
+
+    <script>
+      const quiz = [{
+        question: 'When did the Universe begin?',
+        A: '10.4 billion years ago',
+        B: '13.8 billion years ago',
+        C: '20 billion years ago',
+        D: '18.7 billion years ago',
+        Answer: 'B'
+      },
+      {
+        question: 'Who wrote the theory of relativity?',
+        A: 'Albert Einstein',
+        B: 'Newton',
+        C: 'Tesla',
+        D: 'Maxwell',
+        Answer: 'A'
+      },
+      {
+        question: 'What are the first stars referred to as?',
+        A: 'Population I stars',
+        B: 'Population II stars',
+        C: 'Population III stars',
+        D: 'Population IV stars',
+        Answer: 'C'
+      }];
+
+      let qNum = 0;
+      let score = 0;
+      function startQuiz() {
+        qNum = 0;
+        score = 0;
+        displayQuestion(qNum);
+      }
+
+      function displayQuestion(qNum) {
+        if (qNum >= quiz.length) {
+          document.querySelector('.js-display-questions')
+            .innerHTML = `<p>Quiz completed!</p>`;
+          document.querySelector('.js-display-options')
+            .innerHTML = `<p>Your score: ${score}/${quiz.length}</p>`;
+          document.querySelector('.js-start-button')
+            .innerHTML = 'Restart';
+          return;
+        }
+
+        const {question, A, B, C, D, Answer} = quiz[qNum];
+
+        document.querySelector('.js-display-questions')
+          .innerHTML = `<p class="question">${question}</p>`;
+
+        const optionsHTML = `
+          <p class="options"><input type="radio" name="option" value="A">A. ${A}</p>
+          <p class="options"><input type="radio" name="option" value="B">B. ${B}</p>
+          <p class="options"><input type="radio" name="option" value="C">C. ${C}</p>
+          <p class="options"><input type="radio" name="option" value="D">D. ${D}</p>
+
+          <button onclick="checkAnswer('${Answer}')" class="next-button">Next</button>
+        `;
+        document.querySelector('.js-display-options')
+          .innerHTML = optionsHTML;
+      }
+
+      function checkAnswer(correctAnswer) {
+        const selectedOption = document.querySelector('input[name="option"]:checked');
+        if (selectedOption) {
+          const userAnswer = selectedOption.value;
+          if (userAnswer === correctAnswer) {
+            score++;
+          }
+        } else {
+          alert('Select an option');
+          return;
+        }
+        qNum++;
+        displayQuestion(qNum);
+      }
+      
+
+    </script>
+  </body>
+</html>
